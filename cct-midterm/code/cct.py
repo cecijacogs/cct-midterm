@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
+#Assisted using AI
 # Cultural Consensus Theory (CCT) Implementation using PyMC
-# Based on Romney, Weller & Batchelder, 1986
 
 import pandas as pd
 import numpy as np
@@ -24,7 +23,7 @@ def load_plant_knowledge_data(filepath):
         Array of binary responses (0/1) with shape (N informants, M questions)
     """
     df = pd.read_csv(filepath)
-    # Remove the 'Informant' column
+    # Removes the 'informant' column
     data_matrix = df.iloc[:, 1:].values
     return data_matrix
 
@@ -48,14 +47,13 @@ def run_cct_model(data):
         # Define priors
         
         # Prior for informant competence (D)
-        # We use a Beta(2, 1) prior to favor higher competence values while allowing
-        # the full range from 0.5 (guessing) to 1.0 (perfect knowledge)
+        # We use a Beta (2, 1) prior to favor higher competence values while allowing the full range from 0.5 (guessing) to 1.0 (perfect knowledge)
         # The shifted Beta distribution ensures Di >= 0.5
         D_raw = pm.Beta("D_raw", alpha=2, beta=1, shape=N) 
         D = pm.Deterministic("D", 0.5 + 0.5 * D_raw)
         
         # Prior for consensus answers (Z)
-        # We use Bernoulli(0.5) as a non-informative prior for each item
+        # We use Bernoulli (0.5) as a non-informative prior for each item
         Z = pm.Bernoulli("Z", 0.5, shape=M)
         
         # Calculate probability of giving a "1" response
