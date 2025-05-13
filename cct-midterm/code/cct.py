@@ -274,29 +274,6 @@ def main():
     else:
         print("CCT consensus and majority vote agree on all questions.")
     
-    # Short report
-    print("\n===== SUMMARY REPORT =====")
-    print("""
-The Cultural Consensus Theory model was implemented using PyMC to analyze plant knowledge data from 10 informants 
-responding to 20 questions. For priors, we used a shifted Beta(2, 1) distribution for informant competence, 
-favoring higher competence while ensuring values remain in the plausible range of 0.5 (random guessing) to 1.0 
-(perfect knowledge). For consensus answers, we used a non-informative Bernoulli(0.5) prior.
-
-The model converged successfully with R-hat values close to 1.0. Analysis revealed varying levels of competence 
-among informants, with the most competent being informant {} (D ≈ {:.3f}) and the least competent being informant 
-{} (D ≈ {:.3f}). The estimated consensus answers differ from naive majority voting on {} out of 20 questions ({}% agreement). 
-These differences occur because CCT weights informants' responses by their estimated competence, effectively giving 
-more weight to responses from informants who tend to agree with other high-competence informants, rather than treating 
-all informants equally as in majority voting.
-    """.format(
-        most_competent, 
-        competence_df.iloc[0]['Competence'], 
-        least_competent, 
-        competence_df.iloc[-1]['Competence'],
-        len(disagree_indices),
-        analysis['agreement_percentage']
-    ))
-    
     # Save plots if desired
     # for name, fig in plots.items():
     #     plt.figure(fig.number)
